@@ -1,0 +1,10 @@
+<p>{{msg}}&nbsp;</p>
+
+<h1>HOME</h1>
+
+<div ng-if="me!==null && me!==undefined">
+  <h2>welcome {{me.user.username}}</h2>
+  <a href="" ng-click="auth.destroy()">DESTROY</a>
+</div>
+
+<div ng-if="me==null || me==undefined" ng-include="'/views/includes/connexion.html'"></div>
