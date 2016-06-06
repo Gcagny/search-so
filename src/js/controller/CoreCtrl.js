@@ -7,56 +7,21 @@ app
   // ==============================================
   // === TODO : SET YOUR STRAPI APP ADRESS HERE ===
   // ==============================================
-  $scope.server = 'http://localhost:1337';
+  $scope.server = 'http://localhost:2999';
   // ==============================================
 
-  $scope.auth = {
-    register : function(user){
-      $scope.msg = "Please wait ...";
-      $http.post(
-        $scope.server+'/auth/local/register',
-        {
-          username: user.username,
-          email: user.email,
-          password: user.password
-        }
-      )
-      .then(
-        function(res){
-          ls.set('me', res.data);
-          $scope.me = ls.get('me');
-          $scope.msg = undefined;
-        },
-        function(error){
-          console.log(error);
-        }
-      );
+  // Chargement des produits
+  $http.get($scope.server+'/product')
+  .then(
+    function(res){
+      console.log('OK : products loaded');
+      $scope.products = res.data;
     },
-
-    login : function(user){
-      $scope.msg = "Please wait ...";
-      $http.post(
-        $scope.server+'/auth/local',
-        {
-          identifier: user.username,
-          password: user.password
-      })
-      .then(
-        function(res){
-          ls.set('me', res.data);
-          $scope.me = ls.get('me');
-          $scope.msg = undefined;
-        },
-        function(error){
-          console.log(error);
-        }
-      );
-    },
-
-    destroy : function(){
-      ls.remove('me');
-      $scope.me = undefined;
+    function(err){
+      console.log('ERR : ' + err.data);
     }
-  };
+  );
+
+
 
 }]);

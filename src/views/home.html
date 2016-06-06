@@ -1,10 +1,17 @@
-<p>{{msg}}&nbsp;</p>
-
-<h1>HOME</h1>
-
-<div ng-if="me!==null && me!==undefined">
-  <h2>welcome {{me.user.username}}</h2>
-  <a href="" ng-click="auth.destroy()">DESTROY</a>
-</div>
-
-<div ng-if="me==null || me==undefined" ng-include="'/views/includes/connexion.html'"></div>
+<h1>Produits</h1>
+<form>
+  <input type="text" ng-model="keyword">
+  <input type="button" value="Rechercher" ng-click="search(keyword, products)">
+</form>
+<!-- TODO tableau de résultat -->
+<table>
+  <tr>
+    <th ng-repeat="a in cfg.attributes">{{a.name}}</th>
+  </tr>
+  <tr ng-repeat="r in result">
+    <td
+      ng-repeat="a in attributes">
+      {{r[a.name]}}
+    </td>
+  </tr>
+</table>

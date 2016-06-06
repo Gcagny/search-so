@@ -18,7 +18,7 @@ module.exports = (function(){
 
 	app.config(function(localStorageServiceProvider){
 		// === TODO : define a prefix for your localstorage data
-		localStorageServiceProvider.setPrefix('todo');
+		localStorageServiceProvider.setPrefix('search-so');
 	});
 
 	return app;
