@@ -5,7 +5,7 @@ module.exports = (function(){
   var AngularRoute = require('angular-route');
   var AngularLocalStorage = require('angular-local-storage');
   var _ = require('lodash');
-
+  require('./js/lib/stringTools.js');
   require('./js/app.js');
   require('./js/controller/CoreCtrl.js');
   require('./js/controller/HomeCtrl.js');

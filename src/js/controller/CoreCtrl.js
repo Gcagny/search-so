@@ -11,7 +11,7 @@ app
   // ==============================================
 
   // Chargement des produits
-  $http.get($scope.server+'/product')
+  $http.get($scope.server+'/product?limit=500')
   .then(
     function(res){
       console.log('OK : products loaded');
