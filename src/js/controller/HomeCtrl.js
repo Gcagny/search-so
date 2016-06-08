@@ -4,9 +4,7 @@ var cfg = require('../data/search-config.js');
 app
 .controller('HomeCtrl', ['$scope', '$http', function ($scope, $http) {
 
-
-
- var getAttributes = function(tree, output, tmp){
+ var getAttributes = function(tree, output, tmp){ // Récupère les attributs
    if(tree.attributes === undefined){
      if(tmp===undefined){
        output.push(tree.name);
@@ -24,25 +22,64 @@ app
    }
  }
 
- var parseQuery = function(keyword){
-   keyword = keyword.split(" ");
-   return keyword;
- }
+ var parseQuery = function(keywords){ // Split le string de la barre de recherche en un tableau, chaque mot séparé par " " prend une case
+   keywords = _.uniq(keywords.split(" "));
+   return keywords;
+ };
 
- var search = function(keywords,attr,objects, lower, latinize){ //accepte un seul mot clé
+ var search = function(keywords,attr,objects, lower, latinize){
     var output = [];
     _.forEach(objects,function(o){
-      o.score =0;
-      _.forEach(keywords,function(k){
-        _.forEach(attr,function(a){
-          // a = String(a);
-          if(String(o[a]).allIndicesOf(k,true,true).length > 0){
-            o.score += 1;
-            output.push(o);
+      o.score =0; // Nombre de mot clé différent trouvé dans l'objet
+      o.scoreN = 0; // Total du nombre de fois ou chaque mot clé a était trouvé
+      o.arrScore = []; // Tableau de stockage des mots clé
+      o.arrNumberPerKeyword = {}; // Tableau associatif de stockage de mot clé et leurs valeurs
+
+      _.forEach(keywords,function(k){ // Fonction de création du tableau associatif
+        o.arrNumberPerKeyword[k] = 0; // Initialise chaque value a 0
+
+        // Fonction qui vérifie si _a est contenu dans target, si c’est le cas place _o dans output.
+        var testObjProp = function(_a, target, _o, _k, _output){
+          if(_a !== undefined){
+            var allIndices = String(target[_a]).allIndicesOf(_k,true,true).length;
+            if(allIndices > 0){ // Si o.attribut comprend le keyword(le reconnait grace a allindicesof)
+              _o.arrScore.push(_k); // push du motclé dans le tableau arrScore
+              _o.arrNumberPerKeyword[_k] += allIndices ; // fonction d'incrementation de la value du mot clé en key du tableau associatif
+              _output.push(_o); // Push dans le tableau output l'objet si il a match
+            }
           }
+        }
+
+        // Fonction qui parcourt un arbre de sous-propriété ( o.truc.machin → ['truc', 'machin'] ) et test la présence du key word
+        var testObjPropTree = function(t, target, _o, _k, _output){
+          if(typeof t == 'string'){
+            testObjProp(t, target, _o, _k, _output);
+          }
+          else{
+            testObjPropTree(t[1], target[t[0]], _o, _k, _output);
+          }
+        }
+
+        _.forEach(attr,function(a){
+          testObjPropTree(a, o, o, k, output);
         });
+
+        console.log(output);
       });
+
+      // ----- Calcul du score
+      o.arrScore = _.uniq(o.arrScore); //Clean les doubles (ne veut que savoir si le keyword a match ou pas)
+      o.score = o.arrScore.length;
+
+      // ------ FIn calcul du score
+      //----- Calcul du scoreN
+      _.forEach(o.arrNumberPerKeyword,function(e){
+        o.scoreN += e;
+      })
+      // Fin Calcul
+
     });
+
     output = _.uniq(output); // Clean les doublons
     return output;
  };
@@ -70,10 +107,12 @@ app
    getAttributes(cfg, $scope.attributes);
 
 
+
    // fonction de recherche
    $scope.search = function(keyword, data){
      keyword = parseQuery(keyword);
-     $scope.result = search(keyword, $scope.attributes, $scope.products, true, true);
+     $scope.result = search(keyword, ['text', ['tips', 's'], ['tips', 'ns']], $scope.products, true, true);
+    //  $scope.result = search(keyword, $scope.attributes, $scope.products, true, true);
    };
  }
  init();

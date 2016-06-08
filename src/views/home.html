@@ -2,7 +2,9 @@
 <form>
  <input type="text" ng-model="keyword">
  <input type="button" value="Rechercher" ng-click="search(keyword, products)">
+ {{$scope.total}}
 </form>
+
 <!-- TODO tableau de résultat -->
 <table>
  <tr>
@@ -10,12 +12,14 @@
      {{printAttrLabel(a)}}
    </th>
    <th> score </th>
+   <th> scoreN </th>
  </tr>
- <tr ng-repeat="r in result | orderBy:'-score'">
+ <tr ng-repeat="r in result | orderBy:'-score' | orderBy: '-scoreN' ">
    <td
      ng-repeat="a in attributes">
      {{printAttrVal(a, r)}}
    </td>
    <td> {{r.score}} </td>
+   <td> {{r.scoreN}} </td>
  </tr>
 </table>

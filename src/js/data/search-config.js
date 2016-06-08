@@ -4,32 +4,39 @@ module.exports = (function(){
   var cfg = {
     "attributes" : [
       {
-        "name" : "id",
-        "score" : 0
+        "name" : "number"
       },
       {
-        "name" : "kind",
-        "score" : 2
+        "name" : "text"
       },
       {
-        "name" : "name",
-        "score" : 4
-      },
-      {
-        "name" : "labo",
-        "score" : 2
-      },
-      {
-        "name" : "qsp",
+        "name" : "tips",
         "attributes" : [
           {
-            "name" : "unit",
-            "score" : 1
+            "name" : "s"
           },
-            ]
+          {
+            "name" : "ps"
+          },
+          {
+            "name" : "ns"
+          },
+          {
+            "name" : "so"
           }
-
         ]
+      },
+      {
+        "name" : "testing"
+      },
+      {
+        "name" : "ccp"
+      },
+      {
+        "name" : "md"
+      }
+
+    ]
   };
   return cfg;
 })();

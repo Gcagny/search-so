@@ -7,11 +7,12 @@ app
   // ==============================================
   // === TODO : SET YOUR STRAPI APP ADRESS HERE ===
   // ==============================================
-  $scope.server = 'http://localhost:2999';
+  // $scope.server = 'http://localhost:2999';
+  $scope.server = 'http://localhost:1337/api';
   // ==============================================
 
   // Chargement des produits
-  $http.get($scope.server+'/product?limit=500')
+  $http.get($scope.server+'/question?limit=1')
   .then(
     function(res){
       console.log('OK : products loaded');
