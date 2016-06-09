@@ -2,13 +2,12 @@
 <form>
  <input type="text" ng-model="keyword">
  <input type="button" value="Rechercher" ng-click="search(keyword, products)">
- {{$scope.total}}
 </form>
 
 <!-- TODO tableau de résultat -->
 <table>
  <tr>
-   <th ng-repeat="a in attributes">
+   <th ng-repeat="a in cfg.attributes">
      {{printAttrLabel(a)}}
    </th>
    <th> score </th>

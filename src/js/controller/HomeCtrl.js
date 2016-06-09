@@ -40,8 +40,8 @@ app
 
         // Fonction qui vérifie si _a est contenu dans target, si c’est le cas place _o dans output.
         var testObjProp = function(_a, target, _o, _k, _output){
-          if(_a !== undefined){
-            var allIndices = String(target[_a]).allIndicesOf(_k,true,true).length;
+          if(_a !== undefined && _a.name !== undefined){
+            var allIndices = String(target[_a.name]).allIndicesOf(_k,true,true).length;
             if(allIndices > 0){ // Si o.attribut comprend le keyword(le reconnait grace a allindicesof)
               _o.arrScore.push(_k); // push du motclé dans le tableau arrScore
               _o.arrNumberPerKeyword[_k] += allIndices ; // fonction d'incrementation de la value du mot clé en key du tableau associatif
@@ -51,24 +51,34 @@ app
         }
 
         // Fonction qui parcourt un arbre de sous-propriété ( o.truc.machin → ['truc', 'machin'] ) et test la présence du key word
-        var testObjPropTree = function(t, target, _o, _k, _output){
-          if(typeof t == 'string'){
-            testObjProp(t, target, _o, _k, _output);
-          }
-          else{
-            testObjPropTree(t[1], target[t[0]], _o, _k, _output);
-          }
-        }
+        var testObjPropTree = function(_a, target, _o, _k, _output){ // Si on est sur une feuille
+          console.log('=====');
+          console.log('=== _a');
+          console.log(_a);
+          console.log('=== target');
+          console.log(target);
 
-        _.forEach(attr,function(a){
-          testObjPropTree(a, o, o, k, output);
-        });
+
+          if(typeof _a.attributes == undefined){
+            testObjProp(_a, target, _o, _k, _output);
+          }
+          else{ //TODO boucler sur _a.attri
+            _.forEach(_a.attributes,function(attr){
+              testObjPropTree(attr, target[_a.name], _o, _k, _output);
+
+            });
+          }
+        };
+
+        // _.forEach(attr,function(a){
+          testObjPropTree(attr, o, o, k, output);
+        // });
 
         console.log(output);
       });
 
       // ----- Calcul du score
-      o.arrScore = _.uniq(o.arrScore); //Clean les doubles (ne veut que savoir si le keyword a match ou pas)
+      o.arrScore = _.uniq(o.arrScore); //Clean les doubles (ne veut que savoir si le keyword  match ou pas)
       o.score = o.arrScore.length;
 
       // ------ FIn calcul du score
@@ -87,10 +97,17 @@ app
 
  var init = function(){
    $scope.printAttrLabel = function(attr){
-     if(typeof attr==='object'){
-       return $scope.printAttrLabel(attr[1]);
+     var label = '';
+     if(typeof attr.attributes!==undefined){
+       _.forEach(attr.attributes, function(a){
+         label =  attr.name + '.' + $scope.printAttrLabel(a);
+       });
      }
-     return attr;
+     else{
+       label = attr.name;
+
+     }
+     return label;
    };
 
    $scope.printAttrVal = function(attr, obj){
@@ -103,15 +120,15 @@ app
    };
 
    $scope.cfg = cfg;
-   $scope.attributes = [];
-   getAttributes(cfg, $scope.attributes);
+  //  $scope.attributes = [];
+  //  getAttributes(cfg, $scope.attributes);
 
 
 
    // fonction de recherche
    $scope.search = function(keyword, data){
-     keyword = parseQuery(keyword);
-     $scope.result = search(keyword, ['text', ['tips', 's'], ['tips', 'ns']], $scope.products, true, true);
+   keyword = parseQuery(keyword);
+   $scope.result = search(keyword, $scope.cfg, $scope.products, true, true);
     //  $scope.result = search(keyword, $scope.attributes, $scope.products, true, true);
    };
  }
