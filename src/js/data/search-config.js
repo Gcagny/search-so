@@ -11,20 +11,31 @@ module.exports = (function(){
       },
       {
         "name" : "tips",
-        "attributes" : [
+        "child" :
           {
             "name" : "s"
-          },
+          }
+      },
+      {
+        "name" : "tips",
+        "child" :
           {
             "name" : "ps"
-          },
+          }
+      },
+      {
+        "name" : "tips",
+        "child" :
           {
             "name" : "ns"
-          },
+          }
+      },
+      {
+        "name" : "tips",
+        "child" :
           {
             "name" : "so"
           }
-        ]
       },
       {
         "name" : "testing"

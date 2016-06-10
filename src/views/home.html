@@ -7,16 +7,16 @@
 <!-- TODO tableau de résultat -->
 <table>
  <tr>
-   <th ng-repeat="a in cfg.attributes">
-     {{printAttrLabel(a)}}
+   <th ng-repeat="a in cfg.attributes" ng-include="'/views/includes/result-leaf-label.html'">
    </th>
    <th> score </th>
    <th> scoreN </th>
  </tr>
  <tr ng-repeat="r in result | orderBy:'-score' | orderBy: '-scoreN' ">
    <td
-     ng-repeat="a in attributes">
-     {{printAttrVal(a, r)}}
+     ng-repeat="a in cfg.attributes"
+     ng-init="obj = copy(r)"
+     ng-include="'/views/includes/result-leaf-value.html'">
    </td>
    <td> {{r.score}} </td>
    <td> {{r.scoreN}} </td>
