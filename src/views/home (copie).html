@@ -1,0 +1,19 @@
+<h1>Produits</h1>
+<form>
+ <input type="text" ng-model="keyword">
+ <input type="button" value="Rechercher" ng-click="search(keyword, products)">
+</form>
+<!-- TODO tableau de résultat -->
+<table>
+ <tr>
+   <th ng-repeat="a in attributes">
+     {{printAttrLabel(a)}}
+   </th>
+ </tr>
+ <tr ng-repeat="r in result">
+   <td
+     ng-repeat="a in attributes">
+     {{printAttrVal(a, r)}}
+   </td>
+ </tr>
+</table>

@@ -9,4 +9,5 @@ module.exports = (function(){
   require('./js/app.js');
   require('./js/controller/CoreCtrl.js');
   require('./js/controller/HomeCtrl.js');
+  require('./js/controller/MixteCtrl.js');
 })();

@@ -11,7 +11,7 @@
    <th> score </th>
    <th> scoreN </th>
  </tr>
- <tr ng-repeat="r in result | orderBy:'-score' | orderBy: '-scoreN' ">
+ <tr ng-repeat="r in result | orderBy:'-scoreN' | orderBy:'-score'">
    <td
      ng-repeat="a in cfg.attributes"
      ng-init="obj = copy(r)"

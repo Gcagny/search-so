@@ -47,6 +47,36 @@ module.exports = (function(){
     return indices;
 };
 
+  String.prototype.searchPartReguliere = function(keyword,char,lower,latinise){
+    var str = this;
+    if(lower)
+    {
+      str = str.toLowerCase();
+      keyword = keyword.toLowerCase();
+    }
+    if(latinise)
+    {
+      str = str.latinise();
+      keyword = keyword.latinise();
+    }
+
+    var l = keyword.length;
+    for(var i=0;i<l;i++)
+    {
+      p_erreur = test.substring(0,i) + "." + test.substring(i+1);
+
+      for(var j=i+1;j<l;j++)
+      {
+        s_erreur = p_erreur.substring(0,j) + "." + p_erreur.substring(j+1);
+        regexp =  new RegExp(s_erreur);
+        if(str.match(regexp))
+          {
+            resultat[keyword] = str.allIndicesOf(regexp,lower,latinise);
+          }
+          return resultat;
+      }
+    }
+  }
 
   String.prototype.searchPart = function(keyword,char,lower,latinise) //
   {
